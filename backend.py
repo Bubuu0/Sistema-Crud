@@ -33,6 +33,20 @@ def listar_livros():
     conn.close()
     return linhas
 
+def buscar_livros(termo):
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT * FROM livros
+        WHERE titulo LIKE ? OR autor LIKE ?
+    """, (f"%{termo}%", f"%{termo}%"))
+
+    livros = cursor.fetchall()
+
+    conn.close()
+    return livros
+
 def atualizar_livro(id_livro, titulo, autor, ano):
     conn = conectar()
     cursor = conn.cursor()
