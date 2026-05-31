@@ -19,10 +19,17 @@ def criar_tabela():
     conn.commit()
     conn.close()
 
-def adicionar_livro(titulo, autor, ano):
+def adicionar_livro(titulo, autor, ano, categoria):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO livros (titulo, autor, ano) VALUES (?, ?, ?)", (titulo, autor, ano))
+   cursor.execute(
+    """
+    INSERT INTO livros
+    (titulo, autor, ano, categoria)
+    VALUES (?, ?, ?, ?)
+    """,
+    (titulo, autor, ano, categoria)
+)
     conn.commit()
     conn.close()
 
@@ -48,10 +55,17 @@ def buscar_livros(termo):
     conn.close()
     return livros
 
-def atualizar_livro(id_livro, titulo, autor, ano):
+def atualizar_livro(id_livro, titulo, autor, ano, categoria):
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute("UPDATE livros SET titulo=?, autor=?, ano=? WHERE id=?", (titulo, autor, ano, id_livro))
+    cursor.execute(
+    """
+    UPDATE livros
+    SET titulo=?, autor=?, ano=?, categoria=?
+    WHERE id=?
+    """,
+    (titulo, autor, ano, categoria, id_livro)
+)
     conn.commit()
     conn.close()
 
