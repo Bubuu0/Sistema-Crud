@@ -8,13 +8,14 @@ def criar_tabela():
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS livros (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            titulo TEXT NOT NULL,
-            autor TEXT NOT NULL,
-            ano INTEGER
-        )
-    ''')
+    CREATE TABLE IF NOT EXISTS livros (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo TEXT NOT NULL,
+        autor TEXT NOT NULL,
+        ano INTEGER,
+        categoria TEXT
+    )
+''')
     conn.commit()
     conn.close()
 
