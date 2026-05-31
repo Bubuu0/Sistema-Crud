@@ -40,13 +40,18 @@ if menu == "➕ Adicionar Livro":
         
         if submit:
             if titulo.strip() and autor.strip():
-               backend.adicionar_livro(
+               resultado = resultado = backend.adicionar_livro(
     titulo,
     autor,
     ano,
-    categoria
+    categoria,
+    isbn
 )
-                st.success(f"O livro '{titulo}' foi adicionado com sucesso!")
+
+if resultado:
+    st.success("Livro cadastrado com sucesso!")
+else:
+    st.error("Já existe um livro com esse ISBN.")
             else:
                 st.warning("⚠️ Por favor, preencha os campos obrigatórios (Título e Autor).")
 
@@ -70,7 +75,8 @@ elif menu == "📖 Visualizar Livros":
         "Título",
         "Autor",
         "Ano",
-        "Categoria"
+        "Categoria",
+        "ISBN"
     ]
 )
         st.dataframe(df, use_container_width=True, hide_index=True)
@@ -89,10 +95,16 @@ elif menu == "✏️ Atualizar Livro":
         livro_id = st.selectbox("Selecione o ID do Livro que deseja alterar", df["ID"])
         
         st.write("Insira os novos dados abaixo:")
-        with st.form(key="update_form"):
+      with st.form(key="update_form"):
     novo_titulo = st.text_input("Novo Título")
     novo_autor = st.text_input("Novo Autor")
-    novo_ano = st.number_input("Novo Ano", min_value=1000, max_value=2100, step=1)
+
+    novo_ano = st.number_input(
+        "Novo Ano",
+        min_value=1000,
+        max_value=2100,
+        step=1
+    )
 
     nova_categoria = st.selectbox(
         "Nova Categoria",
@@ -107,6 +119,9 @@ elif menu == "✏️ Atualizar Livro":
         ]
     )
 
+    # ADICIONE ESTA LINHA AQUI
+    novo_isbn = st.text_input("Novo ISBN")
+
     submit = st.form_submit_button("Atualizar Livro")
             
             if submit:
@@ -116,7 +131,8 @@ elif menu == "✏️ Atualizar Livro":
     novo_titulo,
     novo_autor,
     novo_ano,
-    nova_categoria
+    nova_categoria,
+    novo_isbn
 )
                     st.success("Livro atualizado com sucesso!")
                 else:
