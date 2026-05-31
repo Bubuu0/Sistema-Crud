@@ -39,7 +39,13 @@ if menu == "➕ Adicionar Livro":
 # ----------------- READ -----------------
 elif menu == "📖 Visualizar Livros":
     st.subheader("Acervo Atual")
-    livros = backend.listar_livros()
+
+    busca = st.text_input("🔍 Buscar livro por título ou autor")
+
+    if busca:
+        livros = backend.buscar_livros(busca)
+    else:
+        livros = backend.listar_livros()
     
     if livros:
         # Transforma os dados em um DataFrame para uma tabela mais bonita
