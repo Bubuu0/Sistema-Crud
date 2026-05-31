@@ -24,14 +24,28 @@ if menu == "➕ Adicionar Livro":
     st.subheader("Adicionar um Novo Livro")
     
     with st.form(key="add_form"):
-        titulo = st.text_input("Título do Livro*")
-        autor = st.text_input("Autor*")
-        ano = st.number_input("Ano de Publicação", min_value=1000, max_value=2100, step=1, value=2023)
+        categoria = st.selectbox(
+    "Categoria",
+    [
+        "Romance",
+        "Fantasia",
+        "Ficção Científica",
+        "Tecnologia",
+        "História",
+        "Biografia",
+        "Outros"
+    ]
+)
         submit = st.form_submit_button("Salvar Livro")
         
         if submit:
             if titulo.strip() and autor.strip():
-                backend.adicionar_livro(titulo, autor, ano)
+               backend.adicionar_livro(
+    titulo,
+    autor,
+    ano,
+    categoria
+)
                 st.success(f"O livro '{titulo}' foi adicionado com sucesso!")
             else:
                 st.warning("⚠️ Por favor, preencha os campos obrigatórios (Título e Autor).")
@@ -49,7 +63,16 @@ elif menu == "📖 Visualizar Livros":
     
     if livros:
         # Transforma os dados em um DataFrame para uma tabela mais bonita
-        df = pd.DataFrame(livros, columns=["ID", "Título", "Autor", "Ano"])
+       df = pd.DataFrame(
+    livros,
+    columns=[
+        "ID",
+        "Título",
+        "Autor",
+        "Ano",
+        "Categoria"
+    ]
+)
         st.dataframe(df, use_container_width=True, hide_index=True)
     else:
         st.info("A biblioteca está vazia no momento.")
@@ -67,15 +90,34 @@ elif menu == "✏️ Atualizar Livro":
         
         st.write("Insira os novos dados abaixo:")
         with st.form(key="update_form"):
-            novo_titulo = st.text_input("Novo Título")
-            novo_autor = st.text_input("Novo Autor")
-            novo_ano = st.number_input("Novo Ano", min_value=1000, max_value=2100, step=1)
-            
-            submit = st.form_submit_button("Atualizar Livro")
+    novo_titulo = st.text_input("Novo Título")
+    novo_autor = st.text_input("Novo Autor")
+    novo_ano = st.number_input("Novo Ano", min_value=1000, max_value=2100, step=1)
+
+    nova_categoria = st.selectbox(
+        "Nova Categoria",
+        [
+            "Romance",
+            "Fantasia",
+            "Ficção Científica",
+            "Tecnologia",
+            "História",
+            "Biografia",
+            "Outros"
+        ]
+    )
+
+    submit = st.form_submit_button("Atualizar Livro")
             
             if submit:
                 if novo_titulo.strip() and novo_autor.strip():
-                    backend.atualizar_livro(livro_id, novo_titulo, novo_autor, novo_ano)
+                    backend.atualizar_livro(
+    livro_id,
+    novo_titulo,
+    novo_autor,
+    novo_ano,
+    nova_categoria
+)
                     st.success("Livro atualizado com sucesso!")
                 else:
                     st.warning("⚠️ Por favor, preencha todos os campos para atualizar.")
