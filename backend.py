@@ -13,25 +13,36 @@ def criar_tabela():
         titulo TEXT NOT NULL,
         autor TEXT NOT NULL,
         ano INTEGER,
-        categoria TEXT
+        categoria TEXT,
+        isbn TEXT UNIQUE
     )
 ''')
     conn.commit()
     conn.close()
 
-def adicionar_livro(titulo, autor, ano, categoria):
+def adicionar_livro(titulo, autor, ano, categoria, isbn):
     conn = conectar()
     cursor = conn.cursor()
-   cursor.execute(
-    """
-    INSERT INTO livros
-    (titulo, autor, ano, categoria)
-    VALUES (?, ?, ?, ?)
-    """,
-    (titulo, autor, ano, categoria)
-)
-    conn.commit()
-    conn.close()
+
+    try:
+        cursor.execute(
+            """
+            INSERT INTO livros
+            (titulo, autor, ano, categoria, isbn)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (titulo, autor, ano, categoria, isbn)
+        )
+
+        conn.commit()
+
+    except sqlite3.IntegrityError:
+        return False
+
+    finally:
+        conn.close()
+
+    return True
 
 def listar_livros():
     conn = conectar()
